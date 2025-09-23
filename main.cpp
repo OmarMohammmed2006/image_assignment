@@ -1,6 +1,4 @@
-#include <iostream>
-
-using namespace std;
+#include "mylib.h"
 
 int main() {
     auto lang = "C++";
@@ -10,7 +8,9 @@ int main() {
         std::cout << "i = " << i << endl;
     }
 
-    cout << "Just trying out";
+    cout << "Just trying out\n";
+
+    greet();
 
     return 0;
 }

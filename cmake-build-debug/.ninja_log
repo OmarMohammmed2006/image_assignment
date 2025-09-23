@@ -1,7 +1,28 @@
 # ninja log v6
-4	119	7803573561724430	CMakeFiles/Code.dir/main.cpp.obj.ddi	e3ab3c6d10ff25a7
-120	163	7803573563264146	CMakeFiles/Code.dir/CXX.dd	d593fb534a6822f6
-120	163	7803573563264146	C:/Users/omarm/OneDrive/Documents/CS and Ai/First Year/Assignments/OOP/Code/cmake-build-debug/CMakeFiles/Code.dir/CXXModules.json	d593fb534a6822f6
-120	163	7803573563264146	CMakeFiles/Code.dir/main.cpp.obj.modmap	d593fb534a6822f6
-169	657	7803573563369521	CMakeFiles/Code.dir/main.cpp.obj	8d96666fc82fca4f
+2	107	7803587224209625	CMakeFiles/Code.dir/main.cpp.obj.ddi	e3ab3c6d10ff25a7
+28	134	7803585556990125	CMakeFiles/Code.dir/new.cpp.obj.ddi	5853de6e0e1c3456
+108	134	7803587225267042	CMakeFiles/Code.dir/CXX.dd	ccd7b315e654e56a
+108	134	7803587225267042	C:/Users/omarm/OneDrive/Documents/CS and Ai/First Year/Assignments/OOP/Code/cmake-build-debug/CMakeFiles/Code.dir/CXXModules.json	ccd7b315e654e56a
 657	962	7803573568253708	Code.exe	32deed634b8c38dd
+1	132	7803593926227286	build.ninja	b01b853cf30728e6
+108	134	7803587225267042	CMakeFiles/Code.dir/main.cpp.obj.modmap	ccd7b315e654e56a
+177	889	7803585558487438	CMakeFiles/Code.dir/main.cpp.obj	8d96666fc82fca4f
+108	134	7803587225267042	CMakeFiles/Code.dir/new.cpp.obj.modmap	ccd7b315e654e56a
+182	894	7803585558534263	CMakeFiles/Code.dir/new.cpp.obj	ce7d518fcc09fceb
+2	121	7803593926227286	build.ninja	b01b853cf30728e6
+18	119	7803593927057453	CMakeFiles/Code.dir/mylib.cpp.obj.ddi	b2e11870af177e1e
+13	120	7803593927011942	CMakeFiles/Code.dir/main.cpp.obj.ddi	e3ab3c6d10ff25a7
+120	156	7803593928076342	CMakeFiles/Code.dir/CXX.dd	31ffc373ab3df4ec
+120	156	7803593928076342	C:/Users/omarm/OneDrive/Documents/CS and Ai/First Year/Assignments/OOP/Code/cmake-build-debug/CMakeFiles/Code.dir/CXXModules.json	31ffc373ab3df4ec
+120	156	7803593928076342	CMakeFiles/Code.dir/main.cpp.obj.modmap	31ffc373ab3df4ec
+120	156	7803593928076342	CMakeFiles/Code.dir/mylib.cpp.obj.modmap	31ffc373ab3df4ec
+161	883	7803593928477359	CMakeFiles/Code.dir/main.cpp.obj	8d96666fc82fca4f
+165	886	7803593928523881	CMakeFiles/Code.dir/mylib.cpp.obj	3acc333282386b20
+887	1063	7803593935741884	Code.exe	606bd726a21158d5
+1	96	7803594055714396	CMakeFiles/Code.dir/main.cpp.obj.ddi	e3ab3c6d10ff25a7
+97	123	7803594056674205	CMakeFiles/Code.dir/CXX.dd	31ffc373ab3df4ec
+97	123	7803594056674205	C:/Users/omarm/OneDrive/Documents/CS and Ai/First Year/Assignments/OOP/Code/cmake-build-debug/CMakeFiles/Code.dir/CXXModules.json	31ffc373ab3df4ec
+97	123	7803594056674205	CMakeFiles/Code.dir/main.cpp.obj.modmap	31ffc373ab3df4ec
+97	123	7803594056674205	CMakeFiles/Code.dir/mylib.cpp.obj.modmap	31ffc373ab3df4ec
+124	558	7803594056938384	CMakeFiles/Code.dir/main.cpp.obj	8d96666fc82fca4f
+558	701	7803594061281022	Code.exe	606bd726a21158d5

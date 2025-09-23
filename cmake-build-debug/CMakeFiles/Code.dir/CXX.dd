@@ -1,3 +1,5 @@
 ninja_dyndep_version = 1.0
 build CMakeFiles\Code.dir\main.cpp.obj: dyndep
 
+build CMakeFiles\Code.dir\mylib.cpp.obj: dyndep
+
