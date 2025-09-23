@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "revision": 0,
+    "rules": [
+        {
+            "primary-output": "CMakeFiles\\Code.dir\\main.cpp.obj",
+            "outputs": [
+                "C:\\Users\\omarm\\OneDrive\\Documents\\CS and Ai\\First Year\\Assignments\\OOP\\Code\\cmake-build-debug\\vc140.pdb",
+                "CMakeFiles\\Code.dir\\main.cpp.obj.ddi"
+            ],
+            "requires": []
+        }
+    ]
+}

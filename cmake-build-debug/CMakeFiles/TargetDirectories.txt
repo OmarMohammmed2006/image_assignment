@@ -1,0 +1,3 @@
+C:/Users/omarm/OneDrive/Documents/CS and Ai/First Year/Assignments/OOP/Code/cmake-build-debug/CMakeFiles/Code.dir
+C:/Users/omarm/OneDrive/Documents/CS and Ai/First Year/Assignments/OOP/Code/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/omarm/OneDrive/Documents/CS and Ai/First Year/Assignments/OOP/Code/cmake-build-debug/CMakeFiles/rebuild_cache.dir
