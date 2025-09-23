@@ -6,5 +6,6 @@ using namespace std;
 #include <ostream>
 
 void greet();
+void hello();
 
 #endif //MYLIB_H
