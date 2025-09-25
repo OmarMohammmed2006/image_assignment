@@ -6,7 +6,7 @@ using namespace std;
 
 int main() {
     string filename;
-    cout << "Pls enter colored image name to turn to gray scale: ";
+    cout << "Please enter colored image name to turn to gray scale: ";
     cin >> filename;
 
     Image image(filename);
