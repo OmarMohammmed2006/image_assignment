@@ -4,5 +4,7 @@ project(Code)
 set(CMAKE_CXX_STANDARD 20)
 
 add_executable(Code main.cpp
-        mylib.cpp
-        mylib.h)
+        Image_Class.h
+        stb_image.h
+        stb_image_write.h
+)
