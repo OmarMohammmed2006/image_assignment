@@ -34,5 +34,9 @@ int main() {
     cin >> filename;
     image.saveImage(filename);
 
+
+
     return 0;
 }
+
+void gg(){};
