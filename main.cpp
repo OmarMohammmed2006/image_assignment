@@ -20,7 +20,7 @@ class PhotoShop {
         void resize_image(); // 11
         void blur_image(); // 12
         void save_image();
-            // mahmoud was here. he is a whore
+
         // Declare your filter function here --> filer_name();
 
         Image image;
