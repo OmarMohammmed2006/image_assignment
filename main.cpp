@@ -42,19 +42,17 @@ void PhotoShop::load_image() {
     }
 }
 
-
 void PhotoShop::gray_scale(){
+
     for (int i = 0; i < image.width; ++i) {
         for (int j = 0; j < image.height; ++j) {
-            unsigned  int avg = 0; // Initialize average value
 
-            for (int k = 0; k < 3; ++k) {
-                avg += image(i, j, k); // Accumulate pixel values
-            }
+            unsigned char red = image(i, j, 0);
+            unsigned char green = image(i, j, 1);
+            unsigned char blue = image(i, j, 2);
 
-            avg /= 3; // Calculate average
+            unsigned char avg = (red + green + blue) / 3;
 
-            // Set all channels to the average value
             image(i, j, 0) = avg;
             image(i, j, 1) = avg;
             image(i, j, 2) = avg;
@@ -97,7 +95,90 @@ void PhotoShop::invert_image()
     }
 }
 
-void PhotoShop::merge_image(){cout << "Merge" << endl;}
+void PhotoShop::merge_image() {
+    string filename2;
+    cout << "Enter the second image path to merge: ";
+    cin.ignore();
+    getline(cin, filename2);
+
+    try {
+        Image image2(filename2);
+        cout << "Second image loaded successfully! "
+             << image2.width << "x" << image2.height << endl;
+
+        if (image.width == image2.width && image.height == image2.height) {
+            for (int i = 0; i < image.width; ++i)
+                for (int j = 0; j < image.height; ++j)
+                    for (int c = 0; c < 3; ++c)
+                        image(i, j, c) = ((int)image(i, j, c) + (int)image2(i, j, c)) / 2;
+            cout << "Images merged successfully!" << endl;
+            return;
+        }
+
+        cout << "Images are different sizes:\n";
+        cout << "Image 1: " << image.width << "x" << image.height << endl;
+        cout << "Image 2: " << image2.width << "x" << image2.height << endl;
+        cout << "Choose option:\n";
+        cout << "1. Resize to largest size then merge\n";
+        cout << "2. Merge only the common area\n";
+        cout << "Enter choice (1 or 2): ";
+        int choice;
+        cin >> choice;
+
+        if (choice == 1) {
+            int newWidth  = max(image.width, image2.width);
+            int newHeight = max(image.height, image2.height);
+
+            Image resized1(newWidth, newHeight);
+            Image resized2(newWidth, newHeight);
+
+            float x_ratio1 = image.width  / (float)newWidth;
+            float y_ratio1 = image.height / (float)newHeight;
+            for (int i = 0; i < newWidth; ++i) {
+                for (int j = 0; j < newHeight; ++j) {
+                    int srcX = min(int(i * x_ratio1), image.width - 1);
+                    int srcY = min(int(j * y_ratio1), image.height - 1);
+                    for (int c = 0; c < 3; ++c)
+                        resized1(i, j, c) = image(srcX, srcY, c);
+                }
+            }
+
+            float x_ratio2 = image2.width  / (float)newWidth;
+            float y_ratio2 = image2.height / (float)newHeight;
+            for (int i = 0; i < newWidth; ++i) {
+                for (int j = 0; j < newHeight; ++j) {
+                    int srcX = min(int(i * x_ratio2), image2.width - 1);
+                    int srcY = min(int(j * y_ratio2), image2.height - 1);
+                    for (int c = 0; c < 3; ++c)
+                        resized2(i, j, c) = image2(srcX, srcY, c);
+                }
+            }
+
+            for (int i = 0; i < newWidth; ++i) {
+                for (int j = 0; j < newHeight; ++j) {
+                    for (int c = 0; c < 3; ++c)
+                        resized1(i, j, c) = ((int)resized1(i, j, c) + (int)resized2(i, j, c)) / 2;
+                }
+            }
+            image = resized1;
+
+        } else {
+            int mergeW = min(image.width, image2.width);
+            int mergeH = min(image.height, image2.height);
+
+            for (int i = 0; i < mergeW; ++i) {
+                for (int j = 0; j < mergeH; ++j) {
+                    for (int c = 0; c < 3; ++c)
+                        image(i, j, c) = ((int)image(i, j, c) + (int)image2(i, j, c)) / 2;
+                }
+            }
+        }
+        cout << "Images merged successfully!" << endl;
+
+    } catch (exception& e) {
+        cerr << "Error loading second image: " << e.what() << endl;
+    }
+}
 
 void PhotoShop::flip_image() {
     string choice;
