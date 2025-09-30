@@ -213,8 +213,64 @@ void PhotoShop::flip_image() {
         }
     }
 }
+void PhotoShop::rotate_image() {
+    int degree;
+    cout << "please enter the required degree (90,180,270) : ";
+    cin >> degree;
 
-void PhotoShop::rotate_image(){cout << "Rotate" << endl;}
+    if (degree == 180)
+    {
+        Image rotated(image.width, image.height);
+        for (int i = 0; i < rotated.height; ++i)
+        {
+            for (int j = 0; j < rotated.width; ++j)
+            {
+                for (int c = 0; c < image.channels; ++c)
+                {
+                    rotated(j, i, c) = image(image.width - 1 - j,
+                                             image.height - 1 - i, c);
+                }
+            }
+        }
+        image = rotated;
+    }
+    else if (degree == 90)
+    {
+        Image rotated(image.height, image.width);
+
+        for (int i = 0; i < rotated.height; i++)   // i = row index
+        {
+            for (int j = 0; j < rotated.width; j++) // j = col index
+            {
+                for (int c = 0; c < image.channels; c++)
+                {
+                    rotated(j, i, c) = image(i, image.height - 1 - j, c);
+                }
+            }
+        }
+        image = rotated;
+    }
+    else if (degree == 270)
+    {
+        Image rotated(image.height, image.width);
+
+        for (int i = 0; i < rotated.height; i++)   // i = row index
+        {
+            for (int j = 0; j < rotated.width; j++) // j = col index
+            {
+                for (int c = 0; c < image.channels; c++)
+                {
+                    rotated(j, i, c) = image(image.width - 1 - i, j, c);
+                }
+            }
+        }
+        image = rotated;
+    }
+    else
+    {
+        cout << "Invalid rotation degree. Please enter 90, 180, or 270." << endl;
+    }
+}
 
 void PhotoShop::darker_lighter(){cout << "Darken" << endl;}
 
