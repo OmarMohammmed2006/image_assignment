@@ -1,3 +1,32 @@
+/*==========================================================
+                Image Processing Project
+============================================================
+File Name    : CS213_A1_part1_20240054_20240384_20240561.cpp
+Description  : This program implements a simple image editing
+               tool that applies various filters ,The program
+               uses a menu-based interface where
+               users can load, edit, and save images easily.
+------------------------------------------------------------
+Team Members
+------------------------------------------------------------
+1. [Ahmed Mostafa Ellaboudy] – [20240054] – Implemented: GrayScale, Merge, Larken and Lighten
+2. [Omar Mohamed] – [20240384] – Implemented: Black and White, Flip, Crop, Resizing
+3. [Mahmoud Hany] – [20240561] – Implemented: Invert, Rotate, Adding Frame, Blur
+------------------------------------------------------------
+Usage
+------------------------------------------------------------
+1. Run the program.
+2. Load an image (supported formats: .jpg, .png, .bmp, .tga).
+3. Choose filters from the menu to apply transformations.
+4. Save the edited image as a new file or overwrite the original.
+------------------------------------------------------------
+Notes
+------------------------------------------------------------
+- The project used a dedicated Image class for handling image operations.
+- The project is still under development, additional filters
+  and optimizations will be added in future updates.
+- We couldn't register till now so the section number is not included in file name.
+*/
 #include <functional>
 #include <string>
 #include <vector>
@@ -57,6 +86,7 @@ void PhotoShop::gray_scale(){
             image(i, j, 2) = avg;
         }
     }
+    cout << "Grayscale filter applied successfully!" << endl;
 }
 
 void PhotoShop::black_white() {
@@ -76,21 +106,18 @@ void PhotoShop::black_white() {
             image(i, j, 2) = bw;
         }
     }
+    cout << "Black and White filter applied successfully!" << endl;
 }
 
-void PhotoShop::invert_image()
-{
-    for (int i = 0; i < image.width; ++i)
-    {
-        for (int j = 0; j < image.height; ++j)
-        {
-            for (int k = 0; k < 3; ++k) {
+void PhotoShop::invert_image(){
+    for (int i = 0; i < image.width; ++i) {
+        for (int j = 0; j < image.height; ++j) {
+            for (int k = 0; k < 3; ++k)
                 image(i, j, k) = 255 - image(i, j, k);
-            }
         }
     }
+    cout << "Invert_image filter applied successfully!" << endl;
 }
-
 void PhotoShop::merge_image() {
     string filename2;
     cout << "Enter the second image path to merge: ";
@@ -175,7 +202,6 @@ void PhotoShop::merge_image() {
         cerr << "Error loading second image: " << e.what() << endl;
     }
 }
-
 void PhotoShop::flip_image() {
     string choice;
     cout << "Flip horizontally(H) or Vertically(V): ";
@@ -208,6 +234,7 @@ void PhotoShop::flip_image() {
             }
         }
     }
+    cout << "Flip filter applied successfully!" << endl;
 }
 void PhotoShop::rotate_image() {
     int degree;
@@ -227,18 +254,13 @@ void PhotoShop::rotate_image() {
             cout << "Wrong choice number! Enter one of these: 90,180,270.\n";
             continue;
         }
-
         break;
     }
-    if (degree == 180)
-    {
+    if (degree == 180) {
         Image rotated(image.width, image.height);
-        for (int i = 0; i < rotated.height; ++i)
-        {
-            for (int j = 0; j < rotated.width; ++j)
-            {
-                for (int c = 0; c < image.channels; ++c)
-                {
+        for (int i = 0; i < rotated.height; ++i) {
+            for (int j = 0; j < rotated.width; ++j) {
+                for (int c = 0; c < image.channels; ++c) {
                     rotated(j, i, c) = image(image.width - 1 - j,
                                              image.height - 1 - i, c);
                 }
@@ -246,41 +268,63 @@ void PhotoShop::rotate_image() {
         }
         image = rotated;
     }
-    else if (degree == 90)
-    {
+    else if (degree == 90) {
         Image rotated(image.height, image.width);
 
-        for (int i = 0; i < rotated.height; i++)   // i = row index
-        {
-            for (int j = 0; j < rotated.width; j++) // j = col index
-            {
-                for (int c = 0; c < image.channels; c++)
-                {
+        for (int i = 0; i < rotated.height; i++) {
+            for (int j = 0; j < rotated.width; j++) {
+                for (int c = 0; c < image.channels; c++) {
                     rotated(j, i, c) = image(i, image.height - 1 - j, c);
                 }
             }
         }
         image = rotated;
     }
-    else
-    {
+    else {
         Image rotated(image.height, image.width);
 
-        for (int i = 0; i < rotated.height; i++)   // i = row index
-        {
-            for (int j = 0; j < rotated.width; j++) // j = col index
-            {
-                for (int c = 0; c < image.channels; c++)
-                {
+        for (int i = 0; i < rotated.height; i++) {
+            for (int j = 0; j < rotated.width; j++) {
+                for (int c = 0; c < image.channels; c++) {
                     rotated(j, i, c) = image(image.width - 1 - i, j, c);
                 }
             }
         }
         image = rotated;
     }
+    cout << "Rotate image filter applied successfully!" << endl;
 }
 
-void PhotoShop::darker_lighter(){cout << "Darken" << endl;}
+void PhotoShop::darker_lighter() {
+    string choice;
+    cout << "Do you want to make the image (D)arker or (L)ighter: ";
+
+    while (true) {
+        cin >> choice;
+        if (choice.size() == 1 && (tolower(choice[0]) == 'd' || tolower(choice[0]) == 'l')) {
+            break;
+        }
+        cout << "Only choose either D or L\n";
+    }
+
+    int adjustment;
+    cout << "Enter adjustment level (0-100): ";
+    cin >> adjustment;
+    adjustment = min(100, max(0, adjustment));
+    int brightnessChange = (tolower(choice[0]) == 'l') ? adjustment : -adjustment;
+
+    for (int i = 0; i < image.width; ++i) {
+        for (int j = 0; j < image.height; ++j) {
+            for (int k = 0; k < 3; ++k) {
+                int newValue = image(i, j, k) + brightnessChange;
+                // Clamp to [0, 255]
+                newValue = min(255, max(0, newValue));
+                image(i, j, k) = (unsigned char)newValue;
+            }
+        }
+    }
+    cout << "Brightness adjusted successfully!" << endl;
+}
 
 void PhotoShop::crop_image() {
     int x, y, h, w;
@@ -318,7 +362,6 @@ void PhotoShop::crop_image() {
         }
         break;
     }
-
     while (true) {
         cout << "Enter w (width): ";
         cin >> w;
@@ -336,7 +379,6 @@ void PhotoShop::crop_image() {
         }
         break;
     }
-
     while (true) {
         cout << "Enter h (height): ";
         cin >> h;
@@ -363,6 +405,7 @@ void PhotoShop::crop_image() {
         }
     }
     image = cropped_image;
+    cout << "Crop image filter applied successfully!" << endl;
 }
 void PhotoShop::frame_image(){
     int choice;
@@ -400,9 +443,9 @@ void PhotoShop::frame_image(){
         Image framed(newWidth, newHeight);
         for (int y = 0; y < newHeight; y++) {
             for (int x = 0; x < newWidth; x++) {
-                framed(x, y, 0) = 255; // Red
-                framed(x, y, 1) = 255; // Green
-                framed(x, y, 2) = 255; // Blue
+                framed(x, y, 0) = 255;
+                framed(x, y, 1) = 255;
+                framed(x, y, 2) = 255;
             }
         }
         for (int y = 0; y < image.height; y++) {
@@ -446,12 +489,10 @@ void PhotoShop::frame_image(){
         std::cout << "Enter outer frame thickness: ";
         std::cin >> thickness2;
 
-        // Step 1: Create image with inner frame
         int newWidth1 = image.width + 2 * thickness1;
         int newHeight1 = image.height + 2 * thickness1;
         Image innerFrame(newWidth1, newHeight1);
 
-        // Fill with inner frame color
         for (int y = 0; y < newHeight1; y++) {
             for (int x = 0; x < newWidth1; x++) {
                 innerFrame(x, y, 0) = 0;
@@ -460,7 +501,6 @@ void PhotoShop::frame_image(){
             }
         }
 
-        // Copy original image into center
         for (int y = 0; y < image.height; y++) {
             for (int x = 0; x < image.width; x++) {
                 for (int c = 0; c < 3; c++) {
@@ -469,12 +509,10 @@ void PhotoShop::frame_image(){
             }
         }
 
-        // Step 2: Create image with outer frame
         int newWidth2 = newWidth1 + 2 * thickness2;
         int newHeight2 = newHeight1 + 2 * thickness2;
         Image outerFrame(newWidth2, newHeight2);
 
-        // Fill with outer frame color
         for (int y = 0; y < newHeight2; y++) {
             for (int x = 0; x < newWidth2; x++) {
                 outerFrame(x, y, 0) = 255;
@@ -483,7 +521,6 @@ void PhotoShop::frame_image(){
             }
         }
 
-        // Copy innerFrame into the center
         for (int y = 0; y < newHeight1; y++) {
             for (int x = 0; x < newWidth1; x++) {
                 for (int c = 0; c < 3; c++) {
@@ -492,10 +529,59 @@ void PhotoShop::frame_image(){
             }
         }
         image = outerFrame;
-
     }
+    cout << "The Frame applied to image successfully!" << endl;
 }
-void PhotoShop::image_edges(){cout << "Edge" << endl;}
+void PhotoShop::image_edges() {
+    for (int i = 0; i < image.width; ++i) {
+        for (int j = 0; j < image.height; ++j) {
+            unsigned char r = image(i, j, 0);
+            unsigned char g = image(i, j, 1);
+            unsigned char b = image(i, j, 2);
+            unsigned char gray = 0.299*r + 0.587*g + 0.114*b;
+            image(i, j, 0) = image(i, j, 1) = image(i, j, 2) = gray;
+        }
+    }
+    int Gx[3][3] = {
+        {-1, 0, 1},
+        {-2, 0, 2},
+        {-1, 0, 1}
+    };
+
+    int Gy[3][3] = {
+        {-1, -2, -1},
+        { 0,  0,  0},
+        { 1,  2,  1}
+    };
+
+    Image temp = image;
+
+    for (int i = 1; i < image.width - 1; ++i) {
+        for (int j = 1; j < image.height - 1; ++j) {
+            int sumX = 0, sumY = 0;
+
+            for (int x = -1; x <= 1; ++x) {
+                for (int y = -1; y <= 1; ++y) {
+                    int val = temp(i + x, j + y, 0);
+                    sumX += val * Gx[x + 1][y + 1];
+                    sumY += val * Gy[x + 1][y + 1];
+                }
+            }
+            int magnitude = (int)sqrt(sumX * sumX + sumY * sumY);
+            magnitude = min(255, magnitude);
+
+            image(i, j, 0) = image(i, j, 1) = image(i, j, 2) = magnitude;
+        }
+    }
+    for (int i = 0; i < image.width; ++i) {
+        for (int j = 0; j < image.height; ++j) {
+            image(i, j, 0) = 255 - image(i, j, 0);
+            image(i, j, 1) = 255 - image(i, j, 1);
+            image(i, j, 2) = 255 - image(i, j, 2);
+        }
+    }
+    cout << "Edge detection applied successfully!" << endl;
+}
 
 void PhotoShop::resize_image() {
     double w, h;
@@ -539,6 +625,7 @@ void PhotoShop::resize_image() {
         }
     }
     image = resized_image;
+    cout << "Image resized successfully!" << endl;
 }
 
 void PhotoShop::blur_image(){cout << "blur" << endl;}
@@ -561,13 +648,15 @@ void PhotoShop::save_image() {
             string new_filename;
             cin >> new_filename;
             image.saveImage(new_filename);
+            cout << "Image saved successfully.\n";
         }
-        else image.saveImage(filename);
+        else {
+            image.saveImage(filename);
+            cout << "Image saved successfully.\n";
+        }
+
     }
 }
-
-// Write the function's code outside the class so it doesn't become stacked
-// Make sure to include this before the function name PhotoShop:: so it understands that this function belongs to the class
 
 void filter_menu(PhotoShop& ps){
     if (ps.image.width == 0 || ps.image.height == 0) {
@@ -589,8 +678,6 @@ void filter_menu(PhotoShop& ps){
     "11.Resize Image\n"
     "12.Blur Image\n"
     "" << endl;
-    // Menu for choosing the functions -- choose by numbers
-    // Add your new filter name and move the numbers down for the other options
 
     int choice;
     while (true) {
@@ -611,9 +698,8 @@ void filter_menu(PhotoShop& ps){
 
         break;
     }
-    // Choose the number
-    vector<function<void()>> choices = { // Instead of If condition we use a vector of lambda functions to call the filters
-        [&](){ ps.gray_scale(); }, // Lamda functions that call the class methods when the lambda function is called
+    vector<function<void()>> choices = {
+        [&](){ ps.gray_scale(); },
         [&](){ ps.black_white(); },
         [&](){ ps.invert_image(); },
         [&](){ ps.merge_image(); },
@@ -625,10 +711,9 @@ void filter_menu(PhotoShop& ps){
         [&](){ ps.image_edges(); },
         [&](){ ps.resize_image(); },
         [&](){ ps.blur_image(); }
-        // copy/paste the format of the lambda function then just change the method you will call from the class
     };
 
-    choices[choice - 1](); // Calls the lambda function, that calls the class method later
+    choices[choice - 1]();
 }
 
 bool menu(PhotoShop& ps){
@@ -639,9 +724,6 @@ bool menu(PhotoShop& ps){
     "3.Filter Menu\n"
     "4.Exit\n"
     "" << endl;
-
-    // Menu for choosing the functions -- choose by numbers
-    // Add your new filter name and move the numbers down for the other options
 
     int choice;
     while (true) {
@@ -662,17 +744,17 @@ bool menu(PhotoShop& ps){
 
         break;
     }; // Choose the number
-    vector<function<void()>> choices = { // Instead of If condition we use a vector of lambda functions to call the filters
-    [&](){ ps.load_image(); }, // Lamda functions that call the class methods when the lambda function is called
+    vector<function<void()>> choices = {
+    [&](){ ps.load_image(); },
     [&](){ ps.save_image(); },
     [&](){ filter_menu(ps); }
-        // copy/paste the format of the lambda function then just change the method you will call from the class
+
     };
-    if (choice == 4) { // exits if the value is 6, will be changed later because we will add filters
+    if (choice == 4) {
         return false;
     }
-    choices[choice - 1](); // Calls the lambda function, that calls the class method late
-    return true; // To make the while loop work until we Exit
+    choices[choice - 1]();
+    return true;
 }
 
 
@@ -680,7 +762,7 @@ int main() {
     cout << "Welcome to Photoshop\n";
     bool running = true;
     PhotoShop ps;
-    while (running) { // Starts the program and calls the menu and loops until the menu return false
+    while (running) { //
         running = menu(ps);
     }
     cout << "Goodbye!" << endl;
