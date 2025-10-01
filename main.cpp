@@ -7,20 +7,19 @@ using namespace std;
 class PhotoShop {
     public:
         void load_image();
-        void gray_scale(); // 1
-        void black_white(); // 2
-        void invert_image(); // 3
-        void merge_image(); // 4
-        void flip_image(); // 5
-        void rotate_image(); // 6
-        void darker_lighter(); // 7
-        void crop_image(); // 8
-        void frame_image(); // 9
-        void image_edges(); // 10
-        void resize_image(); // 11
-        void blur_image(); // 12
+        void gray_scale();
+        void black_white();
+        void invert_image();
+        void merge_image();
+        void flip_image();
+        void rotate_image();
+        void darker_lighter();
+        void crop_image();
+        void frame_image();
+        void image_edges();
+        void resize_image();
+        void blur_image();
         void save_image();
-        // Declare your filter function here --> filer_name();
 
         Image image;
 };
@@ -33,7 +32,7 @@ void PhotoShop::load_image() {
     getline(cin, filename);
 
     try {
-        image = Image(filename); // load into class member
+        image = Image(filename);
         cout << "Image loaded successfully! "
              << image.width << "x" << image.height << endl;
     }
@@ -69,12 +68,9 @@ void PhotoShop::black_white() {
                 avg += image(i, j, k);
             }
 
-            avg /= 3; // grayscale value
-
-            // Apply threshold (127 is the midpoint of 0–255)
+            avg /= 3;
             unsigned int bw = (avg >= 127) ? 255 : 0;
 
-            // Set all channels to black or white
             image(i, j, 0) = bw;
             image(i, j, 1) = bw;
             image(i, j, 2) = bw;
@@ -215,9 +211,25 @@ void PhotoShop::flip_image() {
 }
 void PhotoShop::rotate_image() {
     int degree;
-    cout << "please enter the required degree (90,180,270) : ";
-    cin >> degree;
+    cout << "Available rotations are 90, 180, 270.\n";
+    while (true) {
+        cout << "Enter your choice: ";
+        cin >> degree;
 
+        if (cin.fail()) {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "Only numbers are allowed.\n";
+            continue;
+        }
+
+        if (degree != 90 && degree != 180 && degree != 270) {
+            cout << "Wrong choice number! Enter one of these: 90,180,270.\n";
+            continue;
+        }
+
+        break;
+    }
     if (degree == 180)
     {
         Image rotated(image.width, image.height);
@@ -250,7 +262,7 @@ void PhotoShop::rotate_image() {
         }
         image = rotated;
     }
-    else if (degree == 270)
+    else
     {
         Image rotated(image.height, image.width);
 
@@ -265,10 +277,6 @@ void PhotoShop::rotate_image() {
             }
         }
         image = rotated;
-    }
-    else
-    {
-        cout << "Invalid rotation degree. Please enter 90, 180, or 270." << endl;
     }
 }
 
@@ -356,9 +364,137 @@ void PhotoShop::crop_image() {
     }
     image = cropped_image;
 }
+void PhotoShop::frame_image(){
+    int choice;
+    cout << "Choose frame type:\n";
+    cout << "1. Black Frame\n";
+    cout << "2. White Frame\n";
+    cout << "3. Double Frame\n";
 
-void PhotoShop::frame_image(){cout << "Frame" << endl;}
+    while (true) {
+        cout << "Enter your choice 1-3: ";
+        cin >> choice;
 
+        if (cin.fail()) {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "Only numbers are allowed.\n";
+            continue;
+        }
+
+        if (choice < 1 || choice > 3) {
+            cout << "Wrong choice number! Enter a number from 1-3.\n";
+            continue;
+        }
+
+        break;
+    }
+
+    if (choice == 1)
+    {
+        cout << "Please enter the frame thickness: ";
+        int thickness;
+        cin >> thickness;
+        int newWidth = image.width + 2 * thickness;
+        int newHeight = image.height + 2 * thickness;
+        Image framed(newWidth, newHeight);
+        for (int y = 0; y < newHeight; y++) {
+            for (int x = 0; x < newWidth; x++) {
+                framed(x, y, 0) = 255; // Red
+                framed(x, y, 1) = 255; // Green
+                framed(x, y, 2) = 255; // Blue
+            }
+        }
+        for (int y = 0; y < image.height; y++) {
+            for (int x = 0; x < image.width; x++) {
+                for (int c = 0; c < 3; c++) {
+                    framed(x + thickness, y + thickness, c) = image(x, y, c);
+                }
+            }
+        }
+        image = framed;
+    }
+    else if (choice == 2)
+    {
+        cout << "Please enter the frame thickness: ";
+        int thickness;
+        cin >> thickness;
+        int newWidth = image.width + 2 * thickness;
+        int newHeight = image.height + 2 * thickness;
+        Image framed(newWidth, newHeight);
+        for (int y = 0; y < newHeight; y++) {
+            for (int x = 0; x < newWidth; x++) {
+                framed(x, y, 0) = 0;
+                framed(x, y, 1) = 0;
+                framed(x, y, 2) = 0;
+            }
+        }
+        for (int y = 0; y < image.height; y++) {
+            for (int x = 0; x < image.width; x++) {
+                for (int c = 0; c < 3; c++) {
+                    framed(x + thickness, y + thickness, c) = image(x, y, c);
+                }
+            }
+        }
+        image = framed;
+    }
+    else
+    {
+         int thickness1, thickness2;
+        std::cout << "Enter inner frame thickness: ";
+        std::cin >> thickness1;
+        std::cout << "Enter outer frame thickness: ";
+        std::cin >> thickness2;
+
+        // Step 1: Create image with inner frame
+        int newWidth1 = image.width + 2 * thickness1;
+        int newHeight1 = image.height + 2 * thickness1;
+        Image innerFrame(newWidth1, newHeight1);
+
+        // Fill with inner frame color
+        for (int y = 0; y < newHeight1; y++) {
+            for (int x = 0; x < newWidth1; x++) {
+                innerFrame(x, y, 0) = 0;
+                innerFrame(x, y, 1) = 0;
+                innerFrame(x, y, 2) = 0;
+            }
+        }
+
+        // Copy original image into center
+        for (int y = 0; y < image.height; y++) {
+            for (int x = 0; x < image.width; x++) {
+                for (int c = 0; c < 3; c++) {
+                    innerFrame(x + thickness1, y + thickness1, c) = image(x, y, c);
+                }
+            }
+        }
+
+        // Step 2: Create image with outer frame
+        int newWidth2 = newWidth1 + 2 * thickness2;
+        int newHeight2 = newHeight1 + 2 * thickness2;
+        Image outerFrame(newWidth2, newHeight2);
+
+        // Fill with outer frame color
+        for (int y = 0; y < newHeight2; y++) {
+            for (int x = 0; x < newWidth2; x++) {
+                outerFrame(x, y, 0) = 255;
+                outerFrame(x, y, 1) = 255;
+                outerFrame(x, y, 2) = 255;
+            }
+        }
+
+        // Copy innerFrame into the center
+        for (int y = 0; y < newHeight1; y++) {
+            for (int x = 0; x < newWidth1; x++) {
+                for (int c = 0; c < 3; c++) {
+                    outerFrame(x + thickness2, y + thickness2, c) = innerFrame(x, y, c);
+                }
+            }
+        }
+        image = outerFrame;
+
+    }
+}
 void PhotoShop::image_edges(){cout << "Edge" << endl;}
 
 void PhotoShop::resize_image() {
