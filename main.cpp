@@ -9,9 +9,9 @@ Description  : This program implements a simple image editing
 ------------------------------------------------------------
 Team Members
 ------------------------------------------------------------
-1. [Ahmed Mostafa Ellaboudy] – [20240054] – Implemented: GrayScale, Merge, Larken and Lighten
-2. [Omar Mohamed] – [20240384] – Implemented: Black and White, Flip, Crop, Resizing
-3. [Mahmoud Hany] – [20240561] – Implemented: Invert, Rotate, Adding Frame, Blur
+1. [Ahmed Mostafa Mahmoud Ellaboudy] – [20240054] – Implemented: GrayScale, Merge, Darken and Lighten
+2. [Omar Mohamed Abdelgalil Mohamed] – [20240384] – Implemented: Black and White, Flip, Crop, Resizing
+3. [Mahmoud Mohamed Hany Mahmoud] – [20240561] – Implemented: Invert, Rotate, Adding Frame, Blur
 ------------------------------------------------------------
 Usage
 ------------------------------------------------------------
@@ -269,7 +269,7 @@ void PhotoShop::rotate_image() {
         image = rotated;
     }
     else if (degree == 90) {
-        Image rotated(image.height, image.width);
+        Image rotated(image.width, image.height);
 
         for (int i = 0; i < rotated.height; i++) {
             for (int j = 0; j < rotated.width; j++) {
@@ -281,7 +281,7 @@ void PhotoShop::rotate_image() {
         image = rotated;
     }
     else {
-        Image rotated(image.height, image.width);
+        Image rotated(image.width, image.height);
 
         for (int i = 0; i < rotated.height; i++) {
             for (int j = 0; j < rotated.width; j++) {
@@ -292,7 +292,7 @@ void PhotoShop::rotate_image() {
         }
         image = rotated;
     }
-    cout << "Rotate image filter applied successfully!" << endl;
+    cout << "Image rotated successfully!" << endl;
 }
 
 void PhotoShop::darker_lighter() {
@@ -635,7 +635,7 @@ void PhotoShop::blur_image()
     int height = blurred.height;
     int kernelsize;
     int offset;
-    cout << "Availabe Blur Options:\n";
+    cout << "Available Blur Options:\n";
     cout << "1. Low\n";
     cout << "2. Medium\n";
     cout << "3. High\n";
@@ -656,23 +656,18 @@ void PhotoShop::blur_image()
         }
         break;
     }
-
-    if (choice == 1)
-    {
+    if (choice == 1) {
         kernelsize = 5;
         offset = 2 ;
     }
-    else if (choice == 2)
-    {
+    else if (choice == 2) {
         kernelsize = 7;
         offset = 3 ;
     }
-    else
-    {
+    else {
         kernelsize = 9;
         offset = 4 ;
     }
-
 
     for (int y = 0; y < height; y++) {
         for (int x = 0; x < width; x++) {
@@ -698,13 +693,13 @@ void PhotoShop::blur_image()
                     count++;
                 }
             }
-
             blurred.setPixel(x, y, 0, sumR / count);
             blurred.setPixel(x, y, 1, sumG / count);
             blurred.setPixel(x, y, 2, sumB / count);
         }
     }
  image = blurred;
+    cout << "Image blured successfully!" << endl;
 }
 
 void PhotoShop::save_image() {
@@ -818,9 +813,8 @@ bool menu(PhotoShop& ps){
             cout << "Wrong choice number! Enter a number from 1-4.\n";
             continue;
         }
-
         break;
-    }; // Choose the number
+    };
     vector<function<void()>> choices = {
     [&](){ ps.load_image(); },
     [&](){ ps.save_image(); },
