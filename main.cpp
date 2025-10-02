@@ -628,7 +628,84 @@ void PhotoShop::resize_image() {
     cout << "Image resized successfully!" << endl;
 }
 
-void PhotoShop::blur_image(){cout << "blur" << endl;}
+void PhotoShop::blur_image()
+{
+    Image blurred(image.width, image.height);
+    int width = blurred.width;
+    int height = blurred.height;
+    int kernelsize;
+    int offset;
+    cout << "Availabe Blur Options:\n";
+    cout << "1. Low\n";
+    cout << "2. Medium\n";
+    cout << "3. High\n";
+    int choice;
+    while (true) {
+        cout << "Enter your choice (1,2,3): ";
+        cin >> choice;
+
+        if (cin.fail()) {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "Only numbers are allowed.\n";
+            continue;
+        }
+        if (choice < 1 || choice > 3) {
+            cout << "Please enter 1, 2, 3.\n";
+            continue;
+        }
+        break;
+    }
+
+    if (choice == 1)
+    {
+        kernelsize = 5;
+        offset = 2 ;
+    }
+    else if (choice == 2)
+    {
+        kernelsize = 7;
+        offset = 3 ;
+    }
+    else
+    {
+        kernelsize = 9;
+        offset = 4 ;
+    }
+
+
+    for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+            int sumR = 0, sumG = 0, sumB = 0;
+            int count = 0;
+
+            for (int i = -offset; i <= offset; i++) {
+                for (int j = -offset; j <= offset; j++) {
+                    int nx = x + i;
+                    int ny = y + j;
+                    if (nx < 0) nx = 0;
+                    if (nx >= width) nx = width - 1;
+                    if (ny < 0) ny = 0;
+                    if (ny >= height) ny = height - 1;
+
+                    int r = image(nx, ny, 0);
+                    int g = image(nx, ny, 1);
+                    int b = image(nx, ny, 2);
+
+                    sumR += r;
+                    sumG += g;
+                    sumB += b;
+                    count++;
+                }
+            }
+
+            blurred.setPixel(x, y, 0, sumR / count);
+            blurred.setPixel(x, y, 1, sumG / count);
+            blurred.setPixel(x, y, 2, sumB / count);
+        }
+    }
+ image = blurred;
+}
 
 void PhotoShop::save_image() {
     if (image.width == 0 || image.height == 0) {
