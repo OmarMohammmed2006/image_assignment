@@ -48,6 +48,12 @@ class PhotoShop {
         void image_edges();
         void resize_image();
         void blur_image();
+        void sunlight();
+        void oil_paint();
+        void television();
+        void night_purple();
+        void infrared();
+        void skew();
         void save_image();
 
         Image image;
@@ -702,6 +708,49 @@ void PhotoShop::blur_image()
     cout << "Image blured successfully!" << endl;
 }
 
+void PhotoShop::sunlight() {
+    for (int i = 0; i < image.width; ++i) {
+        for (int j = 0; j < image.height; ++j) {
+
+            int r = image(i, j, 0);
+            int g = image(i, j, 1);
+            int b = image(i, j, 2);
+
+            r += 25;
+            g += 25;
+            b -= 10;
+
+            if (r > 255) r = 255;
+            if (g > 255) g = 255;
+            if (b > 255) b = 255;
+            if (r < 0) r = 0;
+            if (g < 0) g = 0;
+            if (b < 0) b = 0;
+
+            image(i, j, 0) = static_cast<unsigned char>(r);
+            image(i, j, 1) = static_cast<unsigned char>(g);
+            image(i, j, 2) = static_cast<unsigned char>(b);
+
+        }
+    }
+    cout << "Sunlight filter applied successfully!" << endl;
+}
+void PhotoShop::oil_paint() {
+    cout << "Oil Paint Filter\n";
+}
+void PhotoShop::television() {
+    cout << "Television Filter\n";
+}
+void PhotoShop::night_purple() {
+    cout << "Night Filter\n";
+}
+void PhotoShop::infrared() {
+    cout << "Infrared Filter\n";
+}
+void PhotoShop::skew() {
+    cout << "Skew Filter\n";
+}
+
 void PhotoShop::save_image() {
     if (image.width == 0 || image.height == 0) {
         cout << "Image is empty or not loaded. You can't save\n";
@@ -749,11 +798,17 @@ void filter_menu(PhotoShop& ps){
     "10.Image Edges\n"
     "11.Resize Image\n"
     "12.Blur Image\n"
+    "13.Sunlight\n"
+    "14.Oil Painting\n"
+    "15.Television Effect\n"
+    "16.Night\n"
+    "17.Infrared\n"
+    "18.Skew Image\n"
     "" << endl;
 
     int choice;
     while (true) {
-        cout << "Enter your choice 1-12: ";
+        cout << "Enter your choice 1-18: ";
         cin >> choice;
 
         if (cin.fail()) {
@@ -763,8 +818,8 @@ void filter_menu(PhotoShop& ps){
             continue;
         }
 
-        if (choice < 1 || choice > 12) {
-            cout << "Wrong choice number! Enter a number from 1-12.\n";
+        if (choice < 1 || choice > 18) {
+            cout << "Wrong choice number! Enter a number from 1-18.\n";
             continue;
         }
 
@@ -782,7 +837,13 @@ void filter_menu(PhotoShop& ps){
         [&](){ ps.frame_image(); },
         [&](){ ps.image_edges(); },
         [&](){ ps.resize_image(); },
-        [&](){ ps.blur_image(); }
+        [&](){ ps.blur_image(); },
+        [&](){ ps.sunlight(); },
+        [&](){ ps.oil_paint(); },
+        [&](){ ps.television(); },
+        [&](){ ps.night_purple(); },
+        [&](){ ps.infrared(); },
+        [&](){ ps.skew(); },
     };
 
     choices[choice - 1]();
