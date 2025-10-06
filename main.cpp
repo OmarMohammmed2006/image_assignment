@@ -745,7 +745,37 @@ void PhotoShop::night_purple() {
     cout << "Night Filter\n";
 }
 void PhotoShop::infrared() {
-    cout << "Infrared Filter\n";
+    for (int i = 0; i < image.width; ++i) {
+        for (int j = 0; j < image.height; ++j) {
+
+            unsigned char red = image(i, j, 0);
+            unsigned char green = image(i, j, 1);
+            unsigned char blue = image(i, j, 2);
+
+            unsigned char luminosity = static_cast<unsigned char>(
+                0.299 * red + 0.587 * green + 0.114 * blue
+            );
+
+            unsigned char inverted = 255 - luminosity;
+
+            if (inverted > 180) {
+                image(i, j, 0) = 240;
+                image(i, j, 1) = inverted;
+                image(i, j, 2) = inverted;
+            } else if (inverted > 100) {
+                // Mid-tones → pink/light red shades
+                image(i, j, 0) = 255;
+                image(i, j, 1) = (inverted + 125) / 2;
+                image(i, j, 2) = (inverted + 125) / 2;
+            } else {
+                // Originally bright areas → deep red shades
+                image(i, j, 0) = 200 + (inverted / 2);
+                image(i, j, 1) = (inverted + 50) / 3;
+                image(i, j, 2) = (inverted + 50) / 3;
+            }
+        }
+    }
+    cout << "Infrared filter applied successfully!" << endl;
 }
 void PhotoShop::skew() {
     cout << "Skew Filter\n";
