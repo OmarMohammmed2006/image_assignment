@@ -887,28 +887,52 @@ void PhotoShop::skew() {
 void PhotoShop::save_image() {
     if (image.width == 0 || image.height == 0) {
         cout << "Image is empty or not loaded. You can't save\n";
+        return;
     }
-    else {
-        string overwrite;
-        cout << "You want to overwrite or new file (n for new, o for overwrite)" << endl;
-        cin >> overwrite;
-        while (overwrite != "n" && overwrite != "o") {
-            cout << "Enter correct values(n or o): " << endl;
-            cin >> overwrite;
-        }
-        if (overwrite == "n") {
-            cout << "Pls enter image name to store new image\n";
-            cout << "and specify extension .jpg, .bmp, .png, .tga: ";
-            string new_filename;
-            cin >> new_filename;
-            image.saveImage(new_filename);
-            cout << "Image saved successfully.\n";
-        }
-        else {
-            image.saveImage(filename);
-            cout << "Image saved successfully.\n";
-        }
 
+    string overwrite;
+    cout << "Do you want to overwrite or save as a new file? (n for new, o for overwrite): ";
+    cin >> overwrite;
+
+    while (overwrite != "n" && overwrite != "o") {
+        cout << "Enter correct value (n or o): ";
+        cin >> overwrite;
+    }
+
+    if (overwrite == "n") {
+        string new_filename;
+        cout << "Please enter the new image name (with extension .jpg, .jpeg, .png, .bmp): ";
+
+        bool valid_ext = false;
+        do {
+            cin >> new_filename;
+
+            for (char &c : new_filename)
+                c = tolower(c);
+
+            valid_ext = false;
+
+            size_t dot_pos = new_filename.rfind('.');
+            if (dot_pos != string::npos) {
+                string ext = new_filename.substr(dot_pos);
+
+                if (ext == ".jpg" || ext == ".jpeg" || ext == ".png" || ext == ".bmp") {
+                    valid_ext = true;
+                }
+            }
+
+            if (!valid_ext) {
+                cout << "Invalid extension! Please enter a valid filename ending with .jpg, .jpeg, .png, or .bmp: ";
+            }
+
+        } while (!valid_ext);
+
+        image.saveImage(new_filename);
+        cout << "Image saved successfully.\n";
+
+    } else {
+        image.saveImage(filename);
+        cout << "Image saved successfully.\n";
     }
 }
 
@@ -1007,6 +1031,7 @@ bool menu(PhotoShop& ps){
             cout << "Wrong choice number! Enter a number from 1-4.\n";
             continue;
         }
+
         break;
     };
     vector<function<void()>> choices = {
@@ -1016,8 +1041,18 @@ bool menu(PhotoShop& ps){
 
     };
     if (choice == 4) {
-        return false;
+        string answer;
+        cout << "You sure want to exit before saving? (y/n): ";
+        cin >> answer;
+
+        while (tolower(answer[0]) != 'y' && tolower(answer[0]) != 'n') {
+            cout << "Only enter y or n: ";
+            cin >> answer;
+        }
+
+        return (tolower(answer[0]) == 'y') ? false : true;
     }
+
     choices[choice - 1]();
     return true;
 }
