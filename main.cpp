@@ -27,10 +27,12 @@ Notes
   and optimizations will be added in future updates.
 - We couldn't register till now so the section number is not included in file name.
 */
+#include <iostream>
 #include <functional>
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <cmath>
 using namespace std;
 #include "Image_Class.h"
 
@@ -737,6 +739,10 @@ void PhotoShop::sunlight() {
     cout << "Sunlight filter applied successfully!" << endl;
 }
 void PhotoShop::oil_paint() {
+    cout << "Oil Painting filter is currently under development.\n";
+}
+/*
+void PhotoShop::oil_paint() {
     int windowsize = 7;
     int intensitylvls = 32;
     int half = windowsize / 2;
@@ -800,6 +806,7 @@ void PhotoShop::oil_paint() {
     cout << "Oil Painting filter applied successfully!" << endl;
 
 }
+*/
 
 void PhotoShop::television() {
     Image retroTv(image.width, image.height);
@@ -833,8 +840,8 @@ void PhotoShop::night_purple() {
             {
                 unsigned char value = image(x, y, c);
                 if (c == 0) value = min(255, (int)(value * 1.1));
-                if (c == 1) value = min(255, (int)(value * 0.6));
-                if (c == 2) value = min(255, (int)(value * 1.3));
+                if (c == 1) value = min(255, (int)(value * 0.7));
+                if (c == 2) value = min(255, (int)(value * 1.2));
                 nightpurple(x, y, c) = value;
             }
         }
