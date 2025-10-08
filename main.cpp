@@ -738,10 +738,7 @@ void PhotoShop::sunlight() {
     }
     cout << "Sunlight filter applied successfully!" << endl;
 }
-void PhotoShop::oil_paint() {
-    cout << "Oil Painting filter is currently under development.\n";
-}
-/*
+
 void PhotoShop::oil_paint() {
     int windowsize = 7;
     int intensitylvls = 32;
@@ -753,10 +750,11 @@ void PhotoShop::oil_paint() {
     {
         for (int x = 0; x < image.width; x++)
         {
-            int histogram[intensitylvls] = {0};
-            int sumR[intensitylvls] = {0};
-            int sumG[intensitylvls] = {0};
-            int sumB[intensitylvls] = {0};
+            // Use vectors instead of VLAs
+            vector<int> histogram(intensitylvls, 0);
+            vector<int> sumR(intensitylvls, 0);
+            vector<int> sumG(intensitylvls, 0);
+            vector<int> sumB(intensitylvls, 0);
 
             for (int i = -half; i <= half; i++)
             {
@@ -773,17 +771,18 @@ void PhotoShop::oil_paint() {
 
                         int intensity = (r + g + b) / 3;
                         int bin = (intensity * intensitylvls) / 256;
+                        // Ensure bin is within bounds
+                        if (bin >= intensitylvls) bin = intensitylvls - 1;
                         histogram[bin]++;
                         sumR[bin] += r;
                         sumG[bin] += g;
                         sumB[bin] += b;
-
                     }
                 }
             }
 
-
-            int dominantBin = std::max_element(histogram, histogram + intensitylvls) - histogram;
+            // Use vectors with max_element
+            int dominantBin = std::max_element(histogram.begin(), histogram.end()) - histogram.begin();
 
            if (histogram[dominantBin] > 0)
            {
@@ -797,16 +796,13 @@ void PhotoShop::oil_paint() {
                 oil(x ,y ,1) = image(x,y ,1);
                 oil(x ,y ,2) = image(x,y ,2);
             }
-
         }
     }
 
-
     image = oil;
     cout << "Oil Painting filter applied successfully!" << endl;
-
 }
-*/
+
 
 void PhotoShop::television() {
     Image retroTv(image.width, image.height);
