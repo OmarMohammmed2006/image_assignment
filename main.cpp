@@ -20,6 +20,12 @@ Usage
 3. Choose filters from the menu to apply transformations.
 4. Save the edited image as a new file or overwrite the original.
 ------------------------------------------------------------
+Github Repo
+https://github.com/OmarMohammmed2006/image_assignment/
+------------------------------------------------------------
+Docs Link
+https://docs.google.com/document/d/1zWIla2SNSW3ugxby1OoAgrqBoGHRd09hk5iGNEaZho4/edit?usp=sharing
+------------------------------------------------------------
 Notes
 ------------------------------------------------------------
 - The project used a dedicated Image class for handling image operations.
