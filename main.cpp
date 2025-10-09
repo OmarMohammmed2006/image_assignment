@@ -10,7 +10,7 @@ Description  : This program implements a simple image editing
 Team Members
 ------------------------------------------------------------
 1. [Ahmed Mostafa Mahmoud Ellaboudy] – [20240054] – Implemented: GrayScale, Merge, Darken and Lighten
-+ Bonus filters: infrared, : Image Skewing
++ Bonus filters: infrared, Image Skewing
 2. [Omar Mohamed Abdelgalil Mohamed] – [20240384] – Implemented: Black and White, Flip, Crop, Resizing
 + Bonus filters: natural sunlight effect
 3. [Mahmoud Mohamed Hany Mahmoud] – [20240561] – Implemented: Invert, Rotate, Adding Frame, Blur
