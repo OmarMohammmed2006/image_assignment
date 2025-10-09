@@ -29,6 +29,9 @@ https://github.com/OmarMohammmed2006/image_assignment/
 Docs Link
 https://docs.google.com/document/d/1zWIla2SNSW3ugxby1OoAgrqBoGHRd09hk5iGNEaZho4/edit?usp=sharing
 ------------------------------------------------------------
+Video Link
+https://drive.google.com/file/d/1zGxjwD19huu4fo9OWMeKgQKYrhZEY5KI/view?usp=sharing
+------------------------------------------------------------
 Notes
 ------------------------------------------------------------
 - The project used a dedicated Image class for handling image operations.
@@ -46,6 +49,10 @@ Notes
 #include <cmath>
 using namespace std;
 #include "Image_Class.h"
+
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
 
 class PhotoShop {
     public:
