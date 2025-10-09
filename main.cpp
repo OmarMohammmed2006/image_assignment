@@ -30,6 +30,7 @@ Notes
 #include <functional>
 #include <string>
 #include <vector>
+#include <algorithm>
 using namespace std;
 #include "Image_Class.h"
 
@@ -736,7 +737,66 @@ void PhotoShop::sunlight() {
     cout << "Sunlight filter applied successfully!" << endl;
 }
 void PhotoShop::oil_paint() {
-    cout << "Oil Paint Filter\n";
+    int windowsize = 7;
+    int intensitylvls = 32;
+    int half = windowsize / 2;
+
+    Image oil(image.width, image.height);
+
+    for (int y = 0; y < image.height; y++)
+    {
+        for (int x = 0; x < image.width; x++)
+        {
+            int histogram[intensitylvls] = {0};
+            int sumR[intensitylvls] = {0};
+            int sumG[intensitylvls] = {0};
+            int sumB[intensitylvls] = {0};
+
+            for (int i = -half; i <= half; i++)
+            {
+                for (int j = -half; j <= half; j++)
+                {
+                    int nx = x + i;
+                    int ny = y + j;
+
+                    if ( nx >=0 && nx < image.width && ny >=0 && ny < image.height )
+                    {
+                       unsigned char r = image(nx, ny, 0);
+                        unsigned char g = image(nx, ny, 1);
+                        unsigned char b = image(nx, ny, 2);
+
+                        int intensity = (r + g + b) / 3;
+                        int bin = (intensity * intensitylvls) / 256;
+                        histogram[bin]++;
+                        sumR[bin] += r;
+                        sumG[bin] += g;
+                        sumB[bin] += b;
+
+                    }
+                }
+            }
+
+
+            int dominantBin = std::max_element(histogram, histogram + intensitylvls) - histogram;
+
+           if (histogram[dominantBin] > 0)
+           {
+               oil(x ,y ,0) = sumR[dominantBin] / histogram[dominantBin];
+               oil(x ,y ,1) = sumG[dominantBin] / histogram[dominantBin];
+               oil(x ,y ,2) = sumB[dominantBin] / histogram[dominantBin];
+           }
+            else
+            {
+                oil(x ,y ,0) = image(x,y,0);
+                oil(x ,y ,1) = image(x,y ,1);
+                oil(x ,y ,2) = image(x,y ,2);
+            }
+
+        }
+    }
+
+
+image = oil;
 }
 void PhotoShop::television() {
     cout << "Television Filter\n";
