@@ -799,7 +799,24 @@ void PhotoShop::oil_paint() {
 image = oil;
 }
 void PhotoShop::television() {
-    cout << "Television Filter\n";
+    Image retroTv(image.width, image.height);
+
+    for (int y = 0; y < image.height; y++) {
+        for (int x = 0; x < image.width; x++) {
+            for (int c = 0; c < 3; c++) {
+                unsigned char value = image(x, y, c);
+                if (c == 0) value = min(255, value + 5);
+                if (c == 2) value = min(255, value + 10);
+
+                if (y % 2 == 0) {
+                    value = value * 0.5;
+                }
+
+                retroTv(x, y, c) = value;
+            }
+        }
+    }
+    image = retroTv;
 }
 void PhotoShop::night_purple() {
     cout << "Night Filter\n";
