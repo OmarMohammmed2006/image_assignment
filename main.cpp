@@ -1,7 +1,7 @@
 /*==========================================================
                 Image Processing Project
 ============================================================
-File Name    : CS213_A1_part1_20240054_20240384_20240561.cpp
+File Name    : CS213_A1_part2_20240054_20240384_20240561.cpp
 Description  : This program implements a simple image editing
                tool that applies various filters ,The program
                uses a menu-based interface where
@@ -10,8 +10,11 @@ Description  : This program implements a simple image editing
 Team Members
 ------------------------------------------------------------
 1. [Ahmed Mostafa Mahmoud Ellaboudy] – [20240054] – Implemented: GrayScale, Merge, Darken and Lighten
++ Bonus filters: infrared, : Image Skewing
 2. [Omar Mohamed Abdelgalil Mohamed] – [20240384] – Implemented: Black and White, Flip, Crop, Resizing
++ Bonus filters: natural sunlight effect
 3. [Mahmoud Mohamed Hany Mahmoud] – [20240561] – Implemented: Invert, Rotate, Adding Frame, Blur
++ Bonus filters: : Oil painting, purple effect (luffy purple), Old television
 ------------------------------------------------------------
 Usage
 ------------------------------------------------------------
@@ -29,10 +32,12 @@ https://docs.google.com/document/d/1zWIla2SNSW3ugxby1OoAgrqBoGHRd09hk5iGNEaZho4/
 Notes
 ------------------------------------------------------------
 - The project used a dedicated Image class for handling image operations.
-- The project is still under development, additional filters
-  and optimizations will be added in future updates.
-- We couldn't register till now so the section number is not included in file name.
+- Video prepared by Mahmoud Mohamed Hany Mahmoud (20240561)
+- Document prepared by Omar Mohamed Abdelgalil Mohamed (20240384)
+- Comments header and final modifications prepared by Ahmed Mostafa Mahmoud Ellaboudy (20240054)
+
 */
+
 #include <iostream>
 #include <functional>
 #include <string>
@@ -332,7 +337,6 @@ void PhotoShop::darker_lighter() {
         for (int j = 0; j < image.height; ++j) {
             for (int k = 0; k < 3; ++k) {
                 int newValue = image(i, j, k) + brightnessChange;
-                // Clamp to [0, 255]
                 newValue = min(255, max(0, newValue));
                 image(i, j, k) = (unsigned char)newValue;
             }
@@ -787,7 +791,6 @@ void PhotoShop::oil_paint() {
                 }
             }
 
-            // Use vectors with max_element
             int dominantBin = std::max_element(histogram.begin(), histogram.end()) - histogram.begin();
 
            if (histogram[dominantBin] > 0)
@@ -808,7 +811,6 @@ void PhotoShop::oil_paint() {
     image = oil;
     cout << "Oil Painting filter applied successfully!" << endl;
 }
-
 
 void PhotoShop::television() {
     Image retroTv(image.width, image.height);
@@ -887,7 +889,87 @@ void PhotoShop::infrared() {
 }
 
 void PhotoShop::skew() {
-    cout << "Skew Filter\n";
+    int direction_choice;
+    cout << "Choose skew direction:\n";
+    cout << "  1 - Right skew '/'\n";
+    cout << "  2 - Left skew \\\n";
+
+    while (true) {
+        cout << "Enter your choice (1 or 2): ";
+        cin >> direction_choice;
+
+        if (cin.fail()) {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "Only numbers are allowed.\n";
+            continue;
+        }
+        if (direction_choice < 1 || direction_choice > 2) {
+            cout << "Please enter 1 or 2.\n";
+            continue;
+        }
+        break;
+    }
+    bool skew_right = (direction_choice == 1);
+
+    double skew_angle;
+    while (true) {
+        cout << "Enter skew angle (5-75 degrees): ";
+        cin >> skew_angle;
+
+        if (cin.fail()) {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "Only numbers are allowed.\n";
+            continue;
+        }
+
+        if (skew_angle < 5 || skew_angle > 75) {
+            cout << "Angle must be between 5 and 75 degrees.\n";
+            continue;
+        }
+        break;
+    }
+
+    double angle_radians = skew_angle * M_PI / 180.0;
+    double tan_angle = tan(angle_radians);
+
+    int original_width = image.width;
+    int original_height = image.height;
+
+    int max_shift = abs(static_cast<int>(original_height * tan_angle));
+    int new_width = original_width + max_shift;
+
+    Image skewed_image(new_width, original_height);
+
+    for (int i = 0; i < new_width; ++i) {
+        for (int j = 0; j < original_height; ++j) {
+            skewed_image(i, j, 0) = 255;
+            skewed_image(i, j, 1) = 255;
+            skewed_image(i, j, 2) = 255;
+        }
+    }
+    for (int y = 0; y < original_height; ++y) {
+        for (int x = 0; x < original_width; ++x) {
+            int shift;
+
+            if (skew_right) {
+                shift = static_cast<int>((original_height - y) * tan_angle);
+            } else {
+                shift = static_cast<int>(y * tan_angle);
+            }
+
+            int new_x = x + shift;
+
+            if (new_x >= 0 && new_x < new_width) {
+                skewed_image(new_x, y, 0) = image(x, y, 0);
+                skewed_image(new_x, y, 1) = image(x, y, 1);
+                skewed_image(new_x, y, 2) = image(x, y, 2);
+            }
+        }
+    }
+    image = skewed_image;
+    cout << "Skew filter applied successfully!" << endl;
 }
 
 void PhotoShop::save_image() {
