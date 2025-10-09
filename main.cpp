@@ -797,6 +797,7 @@ void PhotoShop::oil_paint() {
 
 
 image = oil;
+    cout << "Oil paint filter applied successfully!" << endl;
 }
 void PhotoShop::television() {
     Image retroTv(image.width, image.height);
@@ -817,6 +818,7 @@ void PhotoShop::television() {
         }
     }
     image = retroTv;
+    cout << "Television filter applied successfully!" << endl;
 }
 void PhotoShop::night_purple() {
     Image nightpurple(image.width, image.height);
@@ -836,6 +838,7 @@ void PhotoShop::night_purple() {
         }
     }
     image = nightpurple;
+    cout << "Night purple filter applied successfully!" << endl;
 }
 void PhotoShop::infrared() {
     for (int i = 0; i < image.width; ++i) {
