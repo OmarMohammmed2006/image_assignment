@@ -276,43 +276,45 @@ void PhotoShop::rotate_image() {
         }
         break;
     }
+
     if (degree == 180) {
         Image rotated(image.width, image.height);
         for (int i = 0; i < rotated.height; ++i) {
             for (int j = 0; j < rotated.width; ++j) {
                 for (int c = 0; c < image.channels; ++c) {
-                    rotated(j, i, c) = image(image.width - 1 - j,
-                                             image.height - 1 - i, c);
+                    rotated(j, i, c) = image(image.width - 1 - j, image.height - 1 - i, c);
                 }
             }
         }
         image = rotated;
     }
     else if (degree == 90) {
-        Image rotated(image.width, image.height);
+        Image rotated(image.height, image.width);  // swap dimensions
 
-        for (int i = 0; i < rotated.height; i++) {
-            for (int j = 0; j < rotated.width; j++) {
-                for (int c = 0; c < image.channels; c++) {
-                    rotated(j, i, c) = image(i, image.height - 1 - j, c);
+        for (int i = 0; i < image.height; ++i) {
+            for (int j = 0; j < image.width; ++j) {
+                for (int c = 0; c < image.channels; ++c) {
+                    rotated(i, j, c) = image(j, image.height - 1 - i, c);
                 }
             }
         }
         image = rotated;
     }
-    else {
-        Image rotated(image.width, image.height);
+    else if (degree == 270) {
+        Image rotated(image.height, image.width);  // swap dimensions
 
-        for (int i = 0; i < rotated.height; i++) {
-            for (int j = 0; j < rotated.width; j++) {
-                for (int c = 0; c < image.channels; c++) {
-                    rotated(j, i, c) = image(image.width - 1 - i, j, c);
+        for (int i = 0; i < image.height; ++i) {
+            for (int j = 0; j < image.width; ++j) {
+                for (int c = 0; c < image.channels; ++c) {
+                    rotated(i, j, c) = image(image.width - 1 - j, i, c);
                 }
             }
         }
         image = rotated;
     }
+
     cout << "Image rotated successfully!" << endl;
+
 }
 
 void PhotoShop::darker_lighter() {
@@ -1130,7 +1132,7 @@ bool menu(PhotoShop& ps){
     };
     if (choice == 4) {
         string answer;
-        cout << "You sure want to exit before saving? (y/n): ";
+        cout << "You sure want to exit? (y/n): ";
         cin >> answer;
 
         while (tolower(answer[0]) != 'y' && tolower(answer[0]) != 'n') {
