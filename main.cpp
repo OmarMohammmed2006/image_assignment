@@ -819,7 +819,23 @@ void PhotoShop::television() {
     image = retroTv;
 }
 void PhotoShop::night_purple() {
-    cout << "Night Filter\n";
+    Image nightpurple(image.width, image.height);
+
+    for (int y = 0; y < image.height; y++)
+    {
+        for (int x = 0; x < image.width; x++)
+        {
+            for (int c = 0; c < 3; c++)
+            {
+                unsigned char value = image(x, y, c);
+                if (c == 0) value = min(255, (int)(value * 1.1));
+                if (c == 1) value = min(255, (int)(value * 0.6));
+                if (c == 2) value = min(255, (int)(value * 1.3));
+                nightpurple(x, y, c) = value;
+            }
+        }
+    }
+    image = nightpurple;
 }
 void PhotoShop::infrared() {
     for (int i = 0; i < image.width; ++i) {
