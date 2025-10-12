@@ -9,7 +9,7 @@ Description  : This program implements a simple image editing
 ------------------------------------------------------------
 Team Members
 ------------------------------------------------------------
-1. [Ahmed Mostafa Mahmoud Ellaboudy] – [20240054] – Implemented: GrayScale, Merge, Darken and Lighten
+1. [Ahmed Mostafa Mahmoud Ellaboudy] – [20240054] – Implemented: GrayScale, Merge, brightness ,Edge detection
 + Bonus filters: infrared, Image Skewing
 2. [Omar Mohamed Abdelgalil Mohamed] – [20240384] – Implemented: Black and White, Flip, Crop, Resizing
 + Bonus filters: natural sunlight effect
@@ -769,7 +769,6 @@ void PhotoShop::oil_paint() {
     {
         for (int x = 0; x < image.width; x++)
         {
-            // Use vectors instead of VLAs
             vector<int> histogram(intensitylvls, 0);
             vector<int> sumR(intensitylvls, 0);
             vector<int> sumG(intensitylvls, 0);
@@ -882,12 +881,10 @@ void PhotoShop::infrared() {
                 image(i, j, 1) = inverted;
                 image(i, j, 2) = inverted;
             } else if (inverted > 100) {
-                // Mid-tones → pink/light red shades
                 image(i, j, 0) = 255;
                 image(i, j, 1) = (inverted + 125) / 2;
                 image(i, j, 2) = (inverted + 125) / 2;
             } else {
-                // Originally bright areas → deep red shades
                 image(i, j, 0) = 200 + (inverted / 2);
                 image(i, j, 1) = (inverted + 50) / 3;
                 image(i, j, 2) = (inverted + 50) / 3;
